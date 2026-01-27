@@ -1,6 +1,6 @@
 package org.frc.level01;
 
-public class Main01 {
+public class Challenge01 {
     
     static void main() {
         String robotName = "Alpha";
