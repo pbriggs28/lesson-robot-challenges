@@ -8,14 +8,17 @@ public class Solution02Test {
     
     // THIS FILE IS YOUR SCOREBOARD
     //
-    // This test suite is intentionally thorough.
+    // This suite is intentionally thorough.
     // It checks:
     //   - normal behavior
-    //   - boundaries (0 and 100)
-    //   - invalid inputs (negatives and invalid multipliers)
-    //   - clamping behavior
-    //
-    // You should NOT edit this file.
+    //   - boundary behavior (0 and 100)
+    //   - invalid inputs (negative values and invalid multipliers)
+    //   - clamping (never below 0, never above 100)
+    //   - sequences (multiple operations)
+    
+    // -------------------------
+    // drainBatterySubtract
+    // -------------------------
     
     @Test
     void drainSubtract_basic() {
@@ -24,15 +27,27 @@ public class Solution02Test {
     }
     
     @Test
-    void drainSubtract_clampsAtZero() {
+    void drainSubtract_zeroDrain_noChange() {
+        double actual = Solution02.drainBatterySubtract(42.0, 0.0);
+        assertEquals(42.0, actual, 0.0001);
+    }
+    
+    @Test
+    void drainSubtract_clampsAtZero_whenOverDrained() {
         double actual = Solution02.drainBatterySubtract(5.0, 10.0);
         assertEquals(0.0, actual, 0.0001);
     }
     
     @Test
-    void drainSubtract_zeroDrain_noChange() {
-        double actual = Solution02.drainBatterySubtract(42.0, 0.0);
-        assertEquals(42.0, actual, 0.0001);
+    void drainSubtract_batteryAlreadyZero_staysZero() {
+        double actual = Solution02.drainBatterySubtract(0.0, 5.0);
+        assertEquals(0.0, actual, 0.0001);
+    }
+    
+    @Test
+    void drainSubtract_largeDrain_clampsToZero() {
+        double actual = Solution02.drainBatterySubtract(60.0, 1000.0);
+        assertEquals(0.0, actual, 0.0001);
     }
     
     @Test
@@ -47,10 +62,20 @@ public class Solution02Test {
         assertEquals(-10.0, actual, 0.0001);
     }
     
+    // -------------------------
+    // drainBatteryMultiply
+    // -------------------------
+    
     @Test
     void drainMultiply_basic() {
         double actual = Solution02.drainBatteryMultiply(80.0, 0.9);
         assertEquals(72.0, actual, 0.0001);
+    }
+    
+    @Test
+    void drainMultiply_multiplierOne_noChange() {
+        double actual = Solution02.drainBatteryMultiply(33.3, 1.0);
+        assertEquals(33.3, actual, 0.0001);
     }
     
     @Test
@@ -60,9 +85,9 @@ public class Solution02Test {
     }
     
     @Test
-    void drainMultiply_multiplierOne_noChange() {
-        double actual = Solution02.drainBatteryMultiply(33.3, 1.0);
-        assertEquals(33.3, actual, 0.0001);
+    void drainMultiply_batteryAlreadyZero_staysZero() {
+        double actual = Solution02.drainBatteryMultiply(0.0, 0.5);
+        assertEquals(0.0, actual, 0.0001);
     }
     
     @Test
@@ -78,15 +103,19 @@ public class Solution02Test {
     }
     
     @Test
+    void drainMultiply_negativeBattery_rejected_noChange() {
+        double actual = Solution02.drainBatteryMultiply(-10.0, 0.9);
+        assertEquals(-10.0, actual, 0.0001);
+    }
+    
+    // -------------------------
+    // chargeBatteryAdd
+    // -------------------------
+    
+    @Test
     void chargeAdd_basic() {
         double actual = Solution02.chargeBatteryAdd(40.0, 10.0);
         assertEquals(50.0, actual, 0.0001);
-    }
-    
-    @Test
-    void chargeAdd_clampsAtHundred() {
-        double actual = Solution02.chargeBatteryAdd(95.0, 10.0);
-        assertEquals(100.0, actual, 0.0001);
     }
     
     @Test
@@ -96,10 +125,38 @@ public class Solution02Test {
     }
     
     @Test
+    void chargeAdd_clampsAtHundred_whenOvercharged() {
+        double actual = Solution02.chargeBatteryAdd(95.0, 10.0);
+        assertEquals(100.0, actual, 0.0001);
+    }
+    
+    @Test
+    void chargeAdd_batteryAlreadyHundred_staysHundred() {
+        double actual = Solution02.chargeBatteryAdd(100.0, 10.0);
+        assertEquals(100.0, actual, 0.0001);
+    }
+    
+    @Test
+    void chargeAdd_largeCharge_clampsToHundred() {
+        double actual = Solution02.chargeBatteryAdd(20.0, 1000.0);
+        assertEquals(100.0, actual, 0.0001);
+    }
+    
+    @Test
     void chargeAdd_negativeCharge_rejected_noChange() {
         double actual = Solution02.chargeBatteryAdd(50.0, -3.0);
         assertEquals(50.0, actual, 0.0001);
     }
+    
+    @Test
+    void chargeAdd_negativeBattery_rejected_noChange() {
+        double actual = Solution02.chargeBatteryAdd(-10.0, 10.0);
+        assertEquals(-10.0, actual, 0.0001);
+    }
+    
+    // -------------------------
+    // chargeBatteryMultiply
+    // -------------------------
     
     @Test
     void chargeMultiply_basic() {
@@ -108,15 +165,15 @@ public class Solution02Test {
     }
     
     @Test
-    void chargeMultiply_clampsAtHundred() {
-        double actual = Solution02.chargeBatteryMultiply(95.0, 1.2);
-        assertEquals(100.0, actual, 0.0001);
-    }
-    
-    @Test
     void chargeMultiply_multiplierOne_noChange() {
         double actual = Solution02.chargeBatteryMultiply(77.7, 1.0);
         assertEquals(77.7, actual, 0.0001);
+    }
+    
+    @Test
+    void chargeMultiply_clampsAtHundred_whenOvercharged() {
+        double actual = Solution02.chargeBatteryMultiply(95.0, 1.2);
+        assertEquals(100.0, actual, 0.0001);
     }
     
     @Test
@@ -132,12 +189,35 @@ public class Solution02Test {
     }
     
     @Test
+    void chargeMultiply_negativeBattery_rejected_noChange() {
+        double actual = Solution02.chargeBatteryMultiply(-10.0, 1.1);
+        assertEquals(-10.0, actual, 0.0001);
+    }
+    
+    // -------------------------
+    // sequences (mini integration)
+    // -------------------------
+    
+    @Test
     void sequence_drainThenCharge_behavesPredictably() {
         double battery = 80.0;
-        
         battery = Solution02.drainBatterySubtract(battery, 10.0);
         battery = Solution02.chargeBatteryAdd(battery, 15.0);
-        
         assertEquals(85.0, battery, 0.0001);
+    }
+    
+    @Test
+    void sequence_chargeThenDrain_clampsAndMatchesMath() {
+        double battery = 90.0;
+        battery = Solution02.chargeBatteryAdd(battery, 50.0);   // should clamp to 100
+        battery = Solution02.drainBatteryMultiply(battery, 0.5); // should become 50
+        assertEquals(50.0, battery, 0.0001);
+    }
+    
+    @Test
+    void sequence_invalidOperation_doesNotChangeBattery() {
+        double battery = 60.0;
+        battery = Solution02.drainBatteryMultiply(battery, 1.5); // invalid, should reject
+        assertEquals(60.0, battery, 0.0001);
     }
 }
