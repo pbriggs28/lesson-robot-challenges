@@ -1,62 +1,61 @@
 package org.frc.level02;
 
-// LEVEL 02 — BATTERY DRAIN SIMULATION
+// LEVEL 02 — BATTERY DRAIN + CHARGING
 //
-// In this level, you are modeling something every real robot experiences:
-// battery drain over time.
+// In this level, you will model battery percentage changing over time.
+// Real robots constantly adjust internal state like battery, distance, speed, etc.
 //
-// So far, you have used variables to store state.
-// Now you will practice UPDATING numeric state using math.
+// You will implement four battery operations:
+//   - drain by subtracting a fixed amount
+//   - drain by applying a multiplier (percent remaining)
+//   - charge by adding a fixed amount
+//   - charge by applying a multiplier (growth factor)
 //
 // FILE ROLES:
 //   - Challenge02:
 //       * explains the assignment
-//       * demonstrates how the solution is intended to be used
-//       * may be run manually for visual output
+//       * optional demo entry point (manual run)
 //
 //   - Solution02:
 //       * where ALL logic for this level belongs
-//       * methods must return values (do not print)
 //
-//   - SolutionTest02:
-//       * automatically checks whether your Solution02 methods work correctly
-//       * acts like a scoreboard: pass = correct, fail = fix your logic
+//   - Solution02Test:
+//       * the scoreboard
+//       * run tests to verify correctness
 //
-// HOW TO USE SolutionTest02:
-//   - Do NOT edit the test file
-//   - Run the tests using:
-//       ./gradlew test
-//     or by clicking the green test arrow in IntelliJ
-//   - If a test fails:
-//       * read the failure message
-//       * compare expected vs actual values
-//       * fix Solution02 until the test passes
+// HOW TO COMPLETE THE LEVEL:
+//   - Implement the methods in Solution02
+//   - Run Solution02Test until all tests pass
+//   - Do NOT put logic in this file
 //
-// IMPORTANT RULES:
-//   - battery percentage should NEVER go below 0
-//   - subtraction-based drain and percentage-based drain are BOTH common
-//   - do not print inside Solution02 methods
-//
-// Once all tests pass, the level is considered COMPLETE.
+// CORE RULES (DEFENSIVE CODING):
+//   - battery is always clamped to the range 0..100
+//   - negative inputs are rejected (return the original battery unchanged)
+//   - drainBatteryMultiply multiplier must be in range 0..1
+//   - chargeBatteryMultiply multiplier must be >= 1
 
 public class Challenge02 {
     
     public static void main(String[] args) {
         
-        double batteryPercent = 100.0;
+        double battery = 100.0;
         
-        System.out.println("Starting battery: " + batteryPercent + "%");
+        System.out.println("Start battery: " + battery);
         
-        // call the subtraction-based drain method
-        // example: drain the battery by a fixed amount
+        // optional demo: drain by fixed amount
+        battery = Solution02.drainBatterySubtract(battery, 12.5);
+        System.out.println("After drain subtract: " + battery);
         
+        // optional demo: drain by multiplier (keep 90%)
+        battery = Solution02.drainBatteryMultiply(battery, 0.9);
+        System.out.println("After drain multiply: " + battery);
         
+        // optional demo: charge by fixed amount
+        battery = Solution02.chargeBatteryAdd(battery, 30.0);
+        System.out.println("After charge add: " + battery);
         
-        // call the multiplication-based drain method
-        // example: drain the battery by a percentage
-        
-        
-        
-        System.out.println("Final battery: " + batteryPercent + "%");
+        // optional demo: charge by multiplier (increase by 10%)
+        battery = Solution02.chargeBatteryMultiply(battery, 1.1);
+        System.out.println("After charge multiply: " + battery);
     }
 }

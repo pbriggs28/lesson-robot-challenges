@@ -2,90 +2,153 @@ package org.frc.level02;
 
 public class Solution02 {
     
-    // YOU EDIT THIS FILE
-    //
-    // Your job is to implement the two methods below so the tests pass.
-    //
-    // Big idea:
-    //   - Robot state changes over time
-    //   - We compute a NEW value based on the OLD value
-    //   - Then we return that new value
+    /**
+     * LEVEL 02 OBJECTIVE
+     * Implement battery drain and charging methods with validation and clamping.
+     *
+     * Rules used in ALL methods:
+     *   - battery must be clamped to 0..100
+     *   - if batteryPercent is negative, reject and return batteryPercent unchanged
+     *   - if any amount/multiplier is negative, reject and return batteryPercent unchanged
+     *
+     * Extra method-specific rules:
+     *   - drainBatteryMultiply: multiplier must be in range 0..1 (percent remaining)
+     *   - chargeBatteryMultiply: multiplier must be >= 1 (growth factor)
+     *
+     * Do NOT print inside these methods.
+     */
     
     /**
-     * Calculates a new battery percentage by subtracting a fixed drain amount.
+     * Drains the battery by subtracting a fixed amount.
      *
-     * The returned battery value:
-     *   - must be batteryPercent minus drainAmount
-     *   - must NEVER be negative
-     *   - must be clamped to 0 if subtraction would go below 0
+     * Math goal:
+     *   newBattery = batteryPercent - drainAmount
      *
-     * This method should NOT print anything.
+     * Then apply rules:
+     *   - reject invalid negative inputs
+     *   - clamp result to 0..100
      *
-     * @param batteryPercent the current battery percentage
-     * @param drainAmount the fixed amount to subtract
-     * @return the updated battery percentage after drain
+     * @param batteryPercent current battery percentage
+     * @param drainAmount amount to subtract
+     * @return updated battery percentage (or original if rejected)
      */
     public static double drainBatterySubtract(double batteryPercent, double drainAmount) {
         
-        // STEP 1: create a variable to store the new battery value
-        double newBattery = 0;
+        // safe default so code compiles before implementation
+        double newBattery = batteryPercent;
         
-        // STEP 2: subtract drainAmount from batteryPercent
-        // example: 100 - 12.5 = 87.5
-        // newBattery = ...
+        // if batteryPercent is negative, reject and return the original batteryPercent
         
+        // if drainAmount is negative, reject and return the original batteryPercent
         
+        // compute the new battery by subtracting drainAmount
         
-        // STEP 3: clamp the battery so it never goes below 0
-        // if (newBattery < 0) {
-        //     newBattery = 0;
-        // }
+        // clamp the result so it is never below 0
         
+        // clamp the result so it is never above 100
         
-        
-        // STEP 4: return the new battery value
         return newBattery;
     }
     
     /**
-     * Calculates a new battery percentage by applying a multiplier.
+     * Drains the battery by applying a multiplier (percent remaining).
      *
-     * The returned battery value:
-     *   - must be batteryPercent multiplied by multiplier
-     *   - must NEVER be negative
-     *   - must be clamped to 0 if multiplication would go below 0
+     * Math goal:
+     *   newBattery = batteryPercent * multiplier
      *
-     * Example:
-     *   batteryPercent = 80
-     *   multiplier = 0.9
-     *   result = 72
+     * Then apply rules:
+     *   - reject invalid negative inputs
+     *   - reject multiplier > 1 (not a drain multiplier)
+     *   - clamp result to 0..100
      *
-     * This method should NOT print anything.
-     *
-     * @param batteryPercent the current battery percentage
-     * @param multiplier the percentage multiplier (ex: 0.9 = lose 10%)
-     * @return the updated battery percentage after drain
+     * @param batteryPercent current battery percentage
+     * @param multiplier percent remaining (0..1)
+     * @return updated battery percentage (or original if rejected)
      */
     public static double drainBatteryMultiply(double batteryPercent, double multiplier) {
         
-        // STEP 1: create a variable to store the new battery value
-        double newBattery = 0;
+        // safe default so code compiles before implementation
+        double newBattery = batteryPercent;
         
-        // STEP 2: multiply batteryPercent by multiplier
-        // example: 80 * 0.9 = 72
-        // newBattery = ...
+        // if batteryPercent is negative, reject and return the original batteryPercent
         
+        // if multiplier is negative, reject and return the original batteryPercent
         
+        // if multiplier is greater than 1, reject and return the original batteryPercent
         
-        // STEP 3: clamp the battery so it never goes below 0
-        // even if multiplier is negative or batteryPercent is 0
-        // if (newBattery < 0) {
-        //     newBattery = 0;
-        // }
+        // compute the new battery by multiplying batteryPercent by multiplier
         
+        // clamp the result so it is never below 0
         
+        // clamp the result so it is never above 100
         
-        // STEP 4: return the new battery value
+        return newBattery;
+    }
+    
+    /**
+     * Charges the battery by adding a fixed amount.
+     *
+     * Math goal:
+     *   newBattery = batteryPercent + chargeAmount
+     *
+     * Then apply rules:
+     *   - reject invalid negative inputs
+     *   - clamp result to 0..100
+     *
+     * @param batteryPercent current battery percentage
+     * @param chargeAmount amount to add
+     * @return updated battery percentage (or original if rejected)
+     */
+    public static double chargeBatteryAdd(double batteryPercent, double chargeAmount) {
+        
+        // safe default so code compiles before implementation
+        double newBattery = batteryPercent;
+        
+        // if batteryPercent is negative, reject and return the original batteryPercent
+        
+        // if chargeAmount is negative, reject and return the original batteryPercent
+        
+        // compute the new battery by adding chargeAmount
+        
+        // clamp the result so it is never below 0
+        
+        // clamp the result so it is never above 100
+        
+        return newBattery;
+    }
+    
+    /**
+     * Charges the battery by applying a multiplier (growth factor).
+     *
+     * Math goal:
+     *   newBattery = batteryPercent * multiplier
+     *
+     * Then apply rules:
+     *   - reject invalid negative inputs
+     *   - reject multiplier < 1 (not a charge multiplier)
+     *   - clamp result to 0..100
+     *
+     * @param batteryPercent current battery percentage
+     * @param multiplier growth factor (>= 1)
+     * @return updated battery percentage (or original if rejected)
+     */
+    public static double chargeBatteryMultiply(double batteryPercent, double multiplier) {
+        
+        // safe default so code compiles before implementation
+        double newBattery = batteryPercent;
+        
+        // if batteryPercent is negative, reject and return the original batteryPercent
+        
+        // if multiplier is negative, reject and return the original batteryPercent
+        
+        // if multiplier is less than 1, reject and return the original batteryPercent
+        
+        // compute the new battery by multiplying batteryPercent by multiplier
+        
+        // clamp the result so it is never below 0
+        
+        // clamp the result so it is never above 100
+        
         return newBattery;
     }
 }
