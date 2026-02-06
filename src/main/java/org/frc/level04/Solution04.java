@@ -36,19 +36,10 @@ public class Solution04 {
     public static int calculateDistance(int speed, int ticks) {
         
         // STEP 1: create a variable to track total distance
-        int distance = 0;
         
         // STEP 2: create a loop that runs once per tick
-        // for (int i = 0; i < ticks; i++) {
-        //
-        //     STEP 3: add speed to distance each tick
-        //     distance = ...
-        //
-        // }
         
-        
-        
-        // STEP 4: return the total distance
-        return distance;
+        // STEP 3: return the total distance
+        return 67676767;
     }
 }

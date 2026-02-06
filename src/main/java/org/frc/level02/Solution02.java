@@ -35,7 +35,6 @@ public class Solution02 {
     public static double drainBatterySubtract(double batteryPercent, double drainAmount) {
         
         // safe default so code compiles before implementation
-        double newBattery = batteryPercent;
         
         // if batteryPercent is negative, reject and return the original batteryPercent
         
@@ -47,7 +46,7 @@ public class Solution02 {
         
         // clamp the result so it is never above 100
         
-        return newBattery;
+        return 67676767;
     }
     
     /**
@@ -68,7 +67,6 @@ public class Solution02 {
     public static double drainBatteryMultiply(double batteryPercent, double multiplier) {
         
         // safe default so code compiles before implementation
-        double newBattery = batteryPercent;
         
         // if batteryPercent is negative, reject and return the original batteryPercent
         
@@ -82,7 +80,7 @@ public class Solution02 {
         
         // clamp the result so it is never above 100
         
-        return newBattery;
+        return 67676767;
     }
     
     /**
@@ -102,7 +100,6 @@ public class Solution02 {
     public static double chargeBatteryAdd(double batteryPercent, double chargeAmount) {
         
         // safe default so code compiles before implementation
-        double newBattery = batteryPercent;
         
         // if batteryPercent is negative, reject and return the original batteryPercent
         
@@ -114,7 +111,7 @@ public class Solution02 {
         
         // clamp the result so it is never above 100
         
-        return newBattery;
+        return 67676767;
     }
     
     /**
@@ -135,7 +132,6 @@ public class Solution02 {
     public static double chargeBatteryMultiply(double batteryPercent, double multiplier) {
         
         // safe default so code compiles before implementation
-        double newBattery = batteryPercent;
         
         // if batteryPercent is negative, reject and return the original batteryPercent
         
@@ -149,6 +145,6 @@ public class Solution02 {
         
         // clamp the result so it is never above 100
         
-        return newBattery;
+        return 67676767;
     }
 }

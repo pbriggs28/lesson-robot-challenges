@@ -24,22 +24,13 @@ public class Solution03 {
     public static boolean flipEnabled(boolean enabled) {
         
         // STEP 1: create a variable to store the flipped value
-        boolean flipped = false;
         
         // STEP 2: check the value of enabled
         // if enabled is true, set flipped to false
         // otherwise, set flipped to true
-        //
-        // if (enabled == true) {
-        //     flipped = false;
-        // } else {
-        //     flipped = true;
-        // }
-        
-        
         
         // STEP 3: return the flipped value
-        return flipped;
+        return false;
     }
     
     /**
@@ -56,16 +47,11 @@ public class Solution03 {
     public static boolean canMove(boolean enabled) {
         
         // STEP 1: create a variable to store the result
-        boolean allowed = false;
         
         // STEP 2: decide whether movement is allowed
         // allowed should be true ONLY if enabled is true
-        //
-        // allowed = ...
-        
-        
         
         // STEP 3: return the result
-        return allowed;
+        return false;
     }
 }
