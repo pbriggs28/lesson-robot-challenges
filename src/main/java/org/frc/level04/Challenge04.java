@@ -1,32 +1,33 @@
 package org.frc.level04;
 
-// LEVEL 04 — TIME & LOOPS
+// LEVEL 04 — TICKS, LOOPS, AND ACCUMULATION
 //
-// In this level, you are modeling something fundamental in robotics:
-// time passing in repeated steps (ticks).
+// In robotics, time passes in repeated updates (ticks).
+// Each tick is one step of the robot control loop.
 //
-// Robots do NOT jump to their final state.
-// They update their state over and over inside loops.
+// This level focuses on using loops to accumulate distance over time.
 //
 // FILE ROLES:
 //   - Challenge04:
 //       * explains the assignment
-//       * provides context and a demo entry point
+//       * optional demo entry point
 //
 //   - Solution04:
-//       * contains ALL logic for this level
+//       * where ALL logic for this level belongs
+//       * you will implement multiple methods
 //
 //   - Solution04Test:
-//       * automatically checks your logic
+//       * the scoreboard
+//       * tests are grouped by method so you see progress step-by-step
 //
 // HOW TO COMPLETE THE LEVEL:
-//   - Implement the loop-based logic in Solution04
-//   - Run the tests until all tests pass
-//   - Do NOT put logic in this file
+//   - Implement ONE method at a time in Solution04
+//   - Run Solution04Test
+//   - Watch a group of tests turn green as you complete each method
 //
-// REAL ROBOT CONTEXT:
-//   - Robot code often runs at a fixed rate (ex: 20ms per tick)
-//   - Each loop iteration updates position, battery, sensors, etc.
+// IMPORTANT:
+//   - Do NOT put logic in this file
+//   - Do NOT print inside Solution04 methods (return values instead)
 
 public class Challenge04 {
     
@@ -35,14 +36,13 @@ public class Challenge04 {
         int speed = 3;
         int ticks = 5;
         
-        System.out.println("Speed: " + speed);
-        System.out.println("Ticks: " + ticks);
+        int distance = Solution04.distanceAfterTicks(speed, ticks);
+        System.out.println("Distance after " + ticks + " ticks: " + distance);
         
-        // calculate total distance traveled over time
-        // int distance = ...
+        int capped = Solution04.distanceAfterTicksCapped(10, 10, 50);
+        System.out.println("Capped distance: " + capped);
         
-        
-        
-        // System.out.println("Total distance: " + distance);
+        String line = Solution04.positionLine("Alpha", 3, 4);
+        System.out.println(line);
     }
 }

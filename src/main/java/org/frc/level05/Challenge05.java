@@ -1,48 +1,51 @@
 package org.frc.level05;
 
-// LEVEL 05 — ACCUMULATING STATE + STOP CONDITIONS
+// LEVEL 05 — BATTERY + MOVEMENT SIMULATION
 //
-// In Level 04, you accumulated distance over time.
-// In this level, you will simulate multiple pieces of robot state at once.
+// In this level, you simulate robot motion over time (ticks) while battery drains.
+// This models a realistic robotics loop:
 //
-// Robot state changes every tick:
-//   - distance increases as the robot moves
-//   - battery decreases as motors consume power
-//
-// New idea in this level:
-//   - STOP CONDITION
-//   - the robot should stop moving when battery reaches 0
+//   tick 0..N:
+//     - if robot can move, distance increases
+//     - battery decreases each tick
+//     - robot stops moving when battery reaches 0
 //
 // FILE ROLES:
 //   - Challenge05:
 //       * explains the assignment
-//       * provides demo values (optional to run manually)
-//
+//       * optional demo entry point
 //   - Solution05:
-//       * contains ALL logic for this level
-//
+//       * where ALL logic for this level belongs
+//       * multiple methods so you can see progress in test groups
 //   - Solution05Test:
-//       * automatically checks your logic
+//       * the scoreboard
+//       * tests grouped per method
 //
-// HOW TO COMPLETE THE LEVEL:
-//   - Implement simulateDistanceUntilBatteryDead in Solution05
-//   - Run tests until all tests pass
-//   - Do NOT put logic in this file
+// IMPORTANT RULES:
+//   - Do NOT print inside Solution05 methods.
+//   - Reject negative inputs using the rules described in Solution05 JavaDocs.
+//   - Battery must always stay in range 0..100 after applying drain/clamp rules.
 
 public class Challenge05 {
     
     public static void main(String[] args) {
         
-        int speed = 4;                 // units per tick
-        int maxTicks = 10;             // maximum ticks to simulate
-        double batteryPercent = 25.0;  // starting battery
-        double drainPerTick = 6.0;     // battery drain each tick
+        int speed = 4;
+        int maxTicks = 10;
+        double batteryPercent = 25.0;
+        double drainPerTick = 6.0;
         
-        // run the simulation
-        // int distance = ...
+        double batteryAfter = Solution05.applyDrainOnce(batteryPercent, drainPerTick);
+        System.out.println("Battery after 1 tick: " + batteryAfter);
         
+        boolean canMove = Solution05.canMove(enabledTrue(), batteryPercent);
+        System.out.println("Can move? " + canMove);
         
-        
-        // System.out.println("Final distance: " + distance);
+        int distance = Solution05.simulateDistance(speed, maxTicks, batteryPercent, drainPerTick);
+        System.out.println("Distance traveled: " + distance);
+    }
+    
+    private static boolean enabledTrue() {
+        return true;
     }
 }

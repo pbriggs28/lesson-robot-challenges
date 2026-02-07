@@ -8,78 +8,175 @@ public class Solution05Test {
     
     // THIS FILE IS YOUR SCOREBOARD
     //
-    // These tests verify that:
-    //   - distance accumulates correctly per tick
-    //   - battery drains correctly per tick
-    //   - movement stops when battery reaches 0
-    //   - battery never goes negative (implied by correct stopping behavior)
+    // Tests are grouped by method so students see progress:
+    //   Group A: applyDrainOnce
+    //   Group B: canMove
+    //   Group C: simulateDistance
+    //
+    // These tests focus on common mistakes:
+    //   - forgetting to reject negatives
+    //   - forgetting to clamp
+    //   - draining in wrong order
+    //   - moving when battery is 0
+    //   - draining multiple times per tick or not at all
+    //   - ignoring enabled state
     
-    /**
-     * If battery lasts long enough, robot should run all ticks.
-     */
+    // ---------------------------------------
+    // GROUP A: applyDrainOnce
+    // ---------------------------------------
+    
     @Test
-    void simulate_runsAllTicks_whenBatteryIsEnough() {
-        
-        // battery: 50
-        // drain per tick: 5
-        // maxTicks: 10
-        // battery will reach 0 exactly after 10 drains
-        int actual = Solution05.simulateDistanceUntilBatteryDead(3, 10, 50.0, 5.0);
-        
-        // moves every tick because battery is still > 0 at start of each tick
-        int expected = 3 * 10;
-        
-        assertEquals(expected, actual,
-                "Expected full distance over all ticks when battery is enough");
+    void applyDrainOnce_basicDrain() {
+        double actual = Solution05.applyDrainOnce(50.0, 6.0);
+        assertEquals(44.0, actual, 0.0001);
     }
     
-    /**
-     * Robot should stop early when battery runs out.
-     */
     @Test
-    void simulate_stopsEarly_whenBatteryRunsOut() {
-        
-        // battery: 10
-        // drain per tick: 6
-        //
-        // tick 1: battery 10 -> move, then drain to 4
-        // tick 2: battery 4  -> move, then drain to -2 (clamp to 0)
-        // tick 3: battery 0  -> should stop BEFORE moving
-        //
-        // total moves = 2 ticks
-        int actual = Solution05.simulateDistanceUntilBatteryDead(4, 10, 10.0, 6.0);
-        
-        int expected = 4 * 2;
-        
-        assertEquals(expected, actual,
-                "Expected robot to stop moving once battery reaches 0");
+    void applyDrainOnce_zeroDrain_noChange() {
+        double actual = Solution05.applyDrainOnce(50.0, 0.0);
+        assertEquals(50.0, actual, 0.0001);
     }
     
-    /**
-     * If starting battery is already 0, robot should not move at all.
-     */
     @Test
-    void simulate_noMovement_whenStartingBatteryIsZero() {
-        
-        int actual = Solution05.simulateDistanceUntilBatteryDead(5, 10, 0.0, 3.0);
-        
-        int expected = 0;
-        
-        assertEquals(expected, actual,
-                "Robot should not move if starting battery is 0");
+    void applyDrainOnce_exactlyHitsZero() {
+        double actual = Solution05.applyDrainOnce(6.0, 6.0);
+        assertEquals(0.0, actual, 0.0001);
     }
     
-    /**
-     * If speed is 0, distance should remain 0 even if battery drains.
-     */
     @Test
-    void simulate_zeroSpeed_resultsInZeroDistance() {
-        
-        int actual = Solution05.simulateDistanceUntilBatteryDead(0, 10, 50.0, 5.0);
-        
-        int expected = 0;
-        
-        assertEquals(expected, actual,
-                "Zero speed should produce zero distance");
+    void applyDrainOnce_overDrains_clampsToZero() {
+        double actual = Solution05.applyDrainOnce(5.0, 10.0);
+        assertEquals(0.0, actual, 0.0001);
+    }
+    
+    @Test
+    void applyDrainOnce_batteryAlreadyZero_staysZero() {
+        double actual = Solution05.applyDrainOnce(0.0, 5.0);
+        assertEquals(0.0, actual, 0.0001);
+    }
+    
+    @Test
+    void applyDrainOnce_negativeDrain_rejected_noChange() {
+        double actual = Solution05.applyDrainOnce(50.0, -1.0);
+        assertEquals(50.0, actual, 0.0001);
+    }
+    
+    @Test
+    void applyDrainOnce_negativeBattery_rejected_noChange() {
+        double actual = Solution05.applyDrainOnce(-10.0, 5.0);
+        assertEquals(-10.0, actual, 0.0001);
+    }
+    
+    // ---------------------------------------
+    // GROUP B: canMove
+    // ---------------------------------------
+    
+    @Test
+    void canMove_enabledAndPositiveBattery_allows() {
+        assertTrue(Solution05.canMove(true, 1.0));
+    }
+    
+    @Test
+    void canMove_enabledAndZeroBattery_blocks() {
+        assertFalse(Solution05.canMove(true, 0.0));
+    }
+    
+    @Test
+    void canMove_disabledAndPositiveBattery_blocks() {
+        assertFalse(Solution05.canMove(false, 50.0));
+    }
+    
+    @Test
+    void canMove_disabledAndZeroBattery_blocks() {
+        assertFalse(Solution05.canMove(false, 0.0));
+    }
+    
+    @Test
+    void canMove_negativeBattery_rejectedBlocks() {
+        assertFalse(Solution05.canMove(true, -0.0001));
+    }
+    
+    // ---------------------------------------
+    // GROUP C: simulateDistance
+    // ---------------------------------------
+    
+    @Test
+    void simulateDistance_runsAllTicks_whenBatteryNeverHitsZero() {
+        // battery: 100, drain 1 for 10 ticks => still > 0 each tick
+        int actual = Solution05.simulateDistance(3, 10, 100.0, 1.0);
+        assertEquals(30, actual);
+    }
+    
+    @Test
+    void simulateDistance_stopsMoving_afterBatteryReachesZero() {
+        // battery: 10, drain 6
+        // tick1: battery 10 -> move, drain to 4
+        // tick2: battery 4  -> move, drain to 0 (clamped)
+        // tick3: battery 0  -> no move
+        int actual = Solution05.simulateDistance(4, 10, 10.0, 6.0);
+        assertEquals(8, actual);
+    }
+    
+    @Test
+    void simulateDistance_startingBatteryZero_noMovement() {
+        int actual = Solution05.simulateDistance(5, 10, 0.0, 1.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_zeroTicks_isZero() {
+        int actual = Solution05.simulateDistance(5, 0, 50.0, 1.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_zeroSpeed_isZeroEvenIfBatteryDrains() {
+        int actual = Solution05.simulateDistance(0, 10, 50.0, 5.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_negativeSpeed_rejectedIsZero() {
+        int actual = Solution05.simulateDistance(-1, 10, 50.0, 1.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_negativeTicks_rejectedIsZero() {
+        int actual = Solution05.simulateDistance(5, -1, 50.0, 1.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_negativeBattery_rejectedIsZero() {
+        int actual = Solution05.simulateDistance(5, 10, -10.0, 1.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_negativeDrain_rejectedIsZero() {
+        int actual = Solution05.simulateDistance(5, 10, 50.0, -1.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_drainZero_movesEveryTick() {
+        int actual = Solution05.simulateDistance(2, 5, 1.0, 0.0);
+        assertEquals(10, actual);
+    }
+    
+    @Test
+    void simulateDistance_orderMatters_mustNotMoveWhenBatteryIsZero() {
+        // Common student bug: drain first then decide to move OR move even when battery is 0.
+        // Starting at 0 should never allow a move.
+        int actual = Solution05.simulateDistance(99, 1, 0.0, 0.0);
+        assertEquals(0, actual);
+    }
+    
+    @Test
+    void simulateDistance_deterministic_sameInputsSameOutput() {
+        int a = Solution05.simulateDistance(3, 10, 10.0, 1.0);
+        int b = Solution05.simulateDistance(3, 10, 10.0, 1.0);
+        assertEquals(a, b);
     }
 }

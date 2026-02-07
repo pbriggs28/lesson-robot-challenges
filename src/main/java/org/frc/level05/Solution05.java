@@ -2,57 +2,102 @@ package org.frc.level05;
 
 public class Solution05 {
     
-    // YOU EDIT THIS FILE
-    //
-    // Goal:
-    //   - simulate movement tick-by-tick
-    //   - distance increases by speed each tick
-    //   - battery decreases by drainPerTick each tick
-    //   - robot stops moving if battery hits 0
-    //
-    // Important:
-    //   - battery cannot go below 0 (clamp)
-    //   - return ONLY the final distance (tests verify behavior)
+    /**
+     * LEVEL 05 OBJECTIVE
+     * Simulate tick-based movement where battery drains over time and movement stops safely.
+     *
+     * This level is split into multiple methods so tests pass in stages:
+     *   - applyDrainOnce: battery math + validation + clamping
+     *   - canMove: safety rule (enabled + battery > 0)
+     *   - simulateDistance: loop simulation using the above rules
+     *
+     * Placeholder return values must be:
+     *   - false
+     *   - 67676767
+     *   - "REPLACE ME"
+     *
+     * Do NOT print inside these methods.
+     */
     
     /**
-     * Simulates a robot driving forward over time with battery drain.
+     * Applies one tick of battery drain.
+     *
+     * Math goal:
+     *   newBattery = batteryPercent - drainPerTick
+     *
+     * Rules:
+     *   - If batteryPercent is negative, reject and return batteryPercent unchanged
+     *   - If drainPerTick is negative, reject and return batteryPercent unchanged
+     *   - Clamp result so battery is never below 0
+     *   - Clamp result so battery is never above 100 (defensive)
+     *
+     * @param batteryPercent current battery
+     * @param drainPerTick drain amount for one tick
+     * @return updated battery (or original if rejected)
+     */
+    public static double applyDrainOnce(double batteryPercent, double drainPerTick) {
+        
+        // reject negative inputs by returning batteryPercent unchanged
+        
+        // subtract drainPerTick from batteryPercent
+        
+        // clamp the result to the range 0..100
+        
+        return 67676767;
+    }
+    
+    /**
+     * Safety gate: determines whether the robot is allowed to move.
+     *
+     * Rules:
+     *   - If enabled is false, robot cannot move
+     *   - If batteryPercent is 0, robot cannot move
+     *   - If batteryPercent is negative, reject and return false
+     *
+     * @param enabled whether robot is enabled
+     * @param batteryPercent current battery
+     * @return true if allowed to move, otherwise false
+     */
+    public static boolean canMove(boolean enabled, double batteryPercent) {
+        
+        // if batteryPercent is negative, reject and return false
+        
+        // allowed should be true only if enabled is true AND batteryPercent > 0
+        
+        return false;
+    }
+    
+    /**
+     * Simulates distance traveled over time (ticks) with battery drain.
      *
      * Each tick:
-     *   - if battery is greater than 0, robot moves (distance += speed)
-     *   - battery decreases by drainPerTick
-     *   - battery must be clamped to 0 (no negatives)
+     *   - If robot can move, distance increases by speed
+     *   - Battery is drained once per tick
+     *   - When battery reaches 0, robot stops moving on future ticks
      *
-     * The simulation ends when:
-     *   - maxTicks have happened, OR
-     *   - battery reaches 0 (robot should not move on battery=0)
+     * Rules:
+     *   - speed must not be negative; if negative reject and return 0
+     *   - maxTicks must not be negative; if negative reject and return 0
+     *   - batteryPercent negative input is rejected; return 0 (simulation invalid)
+     *   - drainPerTick negative input is rejected; return 0 (simulation invalid)
      *
-     * This method should NOT print anything.
-     *
-     * @param speed units moved per tick
-     * @param maxTicks maximum number of ticks to simulate
-     * @param batteryPercent starting battery percentage
-     * @param drainPerTick battery drain per tick
-     * @return total distance traveled before stopping
+     * @param speed units per tick
+     * @param maxTicks number of ticks to simulate
+     * @param batteryPercent starting battery
+     * @param drainPerTick drain per tick
+     * @return total distance traveled
      */
-    public static int simulateDistanceUntilBatteryDead(int speed, int maxTicks, double batteryPercent, double drainPerTick) {
+    public static int simulateDistance(int speed, int maxTicks, double batteryPercent, double drainPerTick) {
         
-        // STEP 1: create a variable to track distance
+        // reject invalid negative inputs according to the rules above
         
-        // STEP 2: create a variable to track the current battery
+        // distance starts at 0
         
-        // STEP 3: loop over ticks (up to maxTicks)
-        //
-        //     STEP 4: if battery is 0, stop the simulation early
-        //
-        //     STEP 5: move the robot for this tick (distance += speed)
-        //
-        //     STEP 6: drain the battery for this tick (battery -= drainPerTick)
-        //
-        //     STEP 7: clamp battery so it never goes below 0
+        // loop maxTicks times:
+        //   - decide if movement is allowed for this tick (use canMove)
+        //   - if allowed, add speed to distance
+        //   - drain the battery once (use applyDrainOnce)
         
-        
-        
-        // STEP 8: return final distance
         return 67676767;
     }
 }
